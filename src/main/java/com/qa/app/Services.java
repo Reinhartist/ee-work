@@ -20,9 +20,11 @@ public class Services {
 		return rep.addPerson(person);
 	}
 	public String deletePerson(Long id) {
+		if(rep.findPerson(id).getAccountNumber().equals("9999")) return "{“message”: “This account is blocked”}";
 		return rep.deletePerson(id);
 	}
 	public String updatePerson(Long id, String name) {
+		if(rep.findPerson(id).getAccountNumber().equals("9999")) return "{“message”: “This account is blocked”}";
 		return rep.updatePerson(id, name);
 	}
 }

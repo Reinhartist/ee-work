@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("person")
@@ -24,27 +25,27 @@ public class Controller {
 		return util.toJson(service.findAllPeople());
 	}
 	
-	@Path("one/{id}")
+	@Path("one")
 	@GET
-	public String findPerson(@PathParam("id") Long id) {
+	public String findPerson(@QueryParam("id") Long id) {
 		return util.toJson(service.findPerson(id));
 	}
 	
-	@Path("add/{name}/{acc}")
-	@PUT
-	public String addPerson(@PathParam("name") String name, @PathParam("acc") String acc) {
-		return service.addPerson(new Person(name, acc));
+	@Path("add")
+	@POST
+	public String addPerson(String body) {
+		return service.addPerson(util.fromJson(body));
 	}
 
-	@Path("delete/{id}")
+	@Path("delete")
 	@PUT
-	public String deletePerson(@PathParam("id") Long id) {
+	public String deletePerson(@QueryParam("id") Long id) {
 		return service.deletePerson(id);
 	}
 	
-	@Path("update/{id}/{name}")
+	@Path("update")
 	@PUT
-	public String updatePerson(@PathParam("id") Long id, @PathParam("name") String name) {
+	public String updatePerson(@QueryParam("id") Long id, @QueryParam("name") String name) {
 		return service.updatePerson(id, name);
 	}
 }
