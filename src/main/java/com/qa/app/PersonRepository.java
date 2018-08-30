@@ -1,6 +1,7 @@
 package com.qa.app;
 
-import javax.persistence.TypedQuery;
+import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -11,14 +12,14 @@ import java.util.List;
 
 import static javax.transaction.Transactional.TxType.REQUIRED;
 
+@Default
 @Transactional(SUPPORTS)
-public class PersonRepository {
+public class PersonRepository implements InterPersonRepository {
 	@PersistenceContext(name = "primary")
 	private EntityManager manager;
 	
 	public List<Person> findAllPeople() {
-		TypedQuery<Person> query = manager.createQuery("select m from person", Person.class);
-		return query.getResultList();
+		return manager.createQuery("select m from Person m", Person.class).getResultList();
 	}
 	
 	public Person findPerson(Long id) {
@@ -26,9 +27,9 @@ public class PersonRepository {
 	}
 	
 	@Transactional(REQUIRED)
-	public Person addPerson(Person person) {
+	public String addPerson(Person person) {
 		manager.persist(person);
-		return person;
+		return "done";
 	}
 	
 	@Transactional(REQUIRED)
@@ -41,9 +42,9 @@ public class PersonRepository {
 	@Transactional(REQUIRED)
 	public String updatePerson(Long id, String name) {
 		Person person = findPerson(id);
-		if(person != null) {
-			manager.merge(new Person(name, person.getAccountNumber()));
-		}
+		Person updatePerson = new Person(name, person.getAccountNumber());
+		updatePerson.setId(id);
+		if(person != null) 	manager.merge(updatePerson);
 		return "Updaterood";
 	}
 

@@ -7,6 +7,11 @@ import javax.persistence.Id;
 
 @Entity
 public class Person {
+	@Override
+	public String toString() {
+		return "Person [id=" + id + ", name=" + name + ", accountNumber=" + accountNumber + "]";
+	}
+
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
@@ -31,5 +36,13 @@ public class Person {
 	}
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
