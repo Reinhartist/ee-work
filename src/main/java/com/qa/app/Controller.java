@@ -34,7 +34,7 @@ public class Controller {
 	@Path("add")
 	@POST
 	public String addPerson(String body) {
-		return service.addPerson(util.fromJson(body));
+		return service.addPerson(util.fromJson(body, Person.class));
 	}
 
 	@Path("delete")

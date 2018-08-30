@@ -11,7 +11,7 @@ public class util {
 		return gson.toJson(obj);
 	}
 	
-	public static Person fromJson(String s) {
-		return gson.fromJson(s, Person.class);
+	public static <T> T fromJson(String s, Class<T> t) {
+		return gson.fromJson(s, t);
 	}
 }
